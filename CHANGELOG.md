@@ -18,6 +18,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### 🎉 Version Initiale
 
+#### ⚠️ Problèmes Connus
+- **Boutons Menu Non Fonctionnels** : Nouveau/Charger/Sauvegarder/Exporter/Paramètres nécessitent implémentation
+- **Audio Désactivé** : Système audio commenté - sons par défaut manquants dans `/sounds/`
+- **Modal Paramètres Vide** : Interface s'ouvre mais contenu non implémenté
+- **Tutoriel Manquant** : Guide interactif à créer
+- **Export MIDI Partiel** : Fonction incomplète, mapping drum notes à finaliser
+
 #### Ajouté
 - **Interface complète** avec système de grille adaptative
 - **Drag & Drop** intuitif pour placement des notes
