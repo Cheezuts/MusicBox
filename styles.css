@@ -1,0 +1,2015 @@
+/* Variables CSS pour les couleurs */
+:root {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2d2d2d;
+    --accent-bg: #3a3a3a;
+    --primary-text: #ffffff;
+    --secondary-text: #cccccc;
+    --accent-color: #4a9eff;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
+    --border-color: #555;
+    --grid-line-color: #444;
+    
+    /* Couleurs pour les éléments de batterie */
+    --kick-color: #ff4444;           /* Rouge - Grosse Caisse */
+    --snare-color: #44ff44;          /* Vert - Caisse Claire */
+    --hihat-closed-color: #4444ff;   /* Bleu - Hi-Hat Fermé */
+    --hihat-open-color: #44ffff;     /* Cyan - Hi-Hat Ouvert */
+    --crash-color: #ffaa00;          /* Orange - Crash */
+    --ride-color: #ff44ff;           /* Magenta - Ride */
+    --splash-color: #ffff44;         /* Jaune - Splash */
+    --tom-high-color: #ff8844;       /* Orange clair - Tom Haut */
+    --tom-mid-color: #ff6644;        /* Orange foncé - Tom Moyen */
+    --tom-low-color: #ff4488;        /* Rose - Tom Bas */
+    --tom-floor-color: #8844ff;      /* Violet - Tom de Sol */
+}
+
+/* Reset et base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    overflow: hidden;
+}
+
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barre de contrôle principale */
+.control-bar {
+    background-color: var(--secondary-bg);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+    min-height: 60px;
+}
+
+.project-name-input {
+    background: transparent;
+    border: none;
+    color: var(--primary-text);
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 200px;
+    padding: 5px;
+    border-bottom: 1px solid transparent;
+}
+
+.project-name-input:hover,
+.project-name-input:focus {
+    border-bottom-color: var(--accent-color);
+    outline: none;
+}
+
+.transport-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.transport-btn {
+    background-color: var(--accent-bg);
+    border: none;
+    color: var(--primary-text);
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.transport-btn:hover {
+    background-color: var(--accent-color);
+}
+
+.transport-btn.active {
+    background-color: var(--success-color);
+    color: var(--primary-text);
+}
+
+.loop-btn {
+    position: relative;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.loop-btn.loop-active {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    color: var(--primary-text);
+    animation: loopPulse 1.5s infinite;
+}
+
+.loop-btn.loop-active::after {
+    content: "🔄";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}
+
+@keyframes loopPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.time-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--accent-bg);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.time-nav {
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.time-indicator {
+    font-weight: bold;
+    min-width: 40px;
+    text-align: center;
+}
+
+.note-selector select {
+    background-color: var(--accent-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Segoe UI Symbol', 'Musical Symbols';
+    font-size: 14px;
+}
+
+.note-selector select option {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Segoe UI Symbol', 'Musical Symbols';
+    padding: 2px;
+}
+
+.note-modifiers {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Segoe UI Symbol', 'Musical Symbols';
+}
+
+.note-modifiers label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    align-items: center;
+    gap: 5px;
+}
+
+.tempo-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tempo-control input[type="number"] {
+    background-color: var(--accent-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 3px;
+    width: 70px;
+    text-align: center;
+}
+
+.tempo-btn {
+    background-color: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: 5px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.tempo-btn:hover {
+    background-color: var(--accent-color);
+}
+
+.tempo-btn:active {
+    transform: scale(0.95);
+}
+
+.master-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.master-volume input[type="range"] {
+    width: 100px;
+}
+
+.progress-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-container input[type="range"] {
+    width: 200px;
+    height: 6px;
+    background: var(--secondary-bg);
+    outline: none;
+    border-radius: 3px;
+}
+
+.progress-container input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.progress-container input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.progress-info {
+    display: flex;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--secondary-text);
+    min-width: 80px;
+}
+
+.menu-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.menu-btn {
+    background-color: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.menu-btn:hover {
+    background-color: var(--accent-color);
+}
+
+/* Interface musicale principale */
+.music-interface {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 10px;
+    padding: 10px;
+    padding-bottom: 20px; /* Plus d'espace en bas */
+    overflow: hidden;
+}
+
+/* Section des blocs */
+.blocks-section {
+    background-color: var(--secondary-bg);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.blocks-container {
+    margin: 10px 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.block {
+    background-color: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 10px;
+    cursor: grab;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.block.dragging {
+    transform: rotate(5deg) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 0;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.block-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: inherit;
+}
+
+.block-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.block-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 4px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.block-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.block-btn.load {
+    color: white;
+}
+
+.block-btn.load:hover {
+    background: rgba(255, 255, 255, 0.4);
+    color: white;
+}
+
+.block-patterns {
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #333;
+    font-weight: 500;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+/* Grille de composition */
+.composition-grid {
+    background-color: var(--secondary-bg);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.composition-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.composition-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.composition-btn {
+    background-color: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.2s;
+}
+
+.composition-btn:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.composition-btn.active {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.composition-btn.danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.composition-btn.danger:hover {
+    background-color: #d32f2f;
+}
+
+.loop-composition-btn.loop-active {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    animation: loopPulse 1.5s infinite;
+}
+
+.composition-timeline {
+    background-color: var(--accent-bg);
+    min-height: 120px;
+    border: 2px dashed var(--border-color);
+    border-radius: 5px;
+    padding: 15px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    position: relative;
+}
+
+.composition-timeline.drag-over {
+    border-color: var(--accent-color);
+    background-color: rgba(74, 158, 255, 0.1);
+    border-style: solid;
+}
+
+.timeline-drop-zone {
+    color: var(--secondary-text);
+    font-style: italic;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.timeline-drop-zone.hidden {
+    display: none;
+}
+
+.composition-block {
+    background-color: var(--success-color);
+    border: 2px solid var(--success-color);
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 2px;
+    color: var(--primary-text);
+    font-size: 12px;
+    cursor: grab;
+    user-select: none;
+    position: relative;
+    transition: all 0.2s;
+    min-width: 80px;
+    text-align: center;
+}
+
+.composition-block:active {
+    cursor: grabbing;
+}
+
+.composition-block.dragging {
+    opacity: 0.6;
+    transform: rotate(3deg) scale(1.05);
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.composition-block.drop-target-before::before,
+.composition-block.drop-target-after::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    background-color: var(--accent-color);
+    top: 0;
+    z-index: 100;
+    animation: dropIndicator 0.8s ease-in-out infinite alternate;
+}
+
+.composition-block.drop-target-before::before {
+    left: -5px;
+}
+
+.composition-block.drop-target-after::after {
+    right: -5px;
+}
+
+@keyframes dropIndicator {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.composition-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.composition-block.playing {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    animation: blockPulse 0.5s ease-in-out;
+}
+
+.composition-block .block-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: none;
+}
+
+.composition-block:hover .block-remove {
+    display: block;
+}
+
+@keyframes blockPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Section des patterns */
+.pattern-section {
+    grid-column: 1 / -1;
+    background-color: var(--secondary-bg);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 80px; /* Ajoute de l'espace avant la batterie virtuelle */
+}
+
+.pattern-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 8px 0;
+}
+
+.pattern-controls select {
+    background-color: var(--accent-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.tracks-and-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 10px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.tracks-panel {
+    background-color: var(--accent-bg);
+    border-radius: 3px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    max-height: 600px; /* Hauteur maximale augmentée pour afficher plus de pistes */
+    overflow-y: auto; /* Scroll vertical automatique */
+    display: flex;
+    flex-direction: column;
+}
+
+.track-controls {
+    flex-shrink: 0; /* Empêche le rétrécissement du header */
+    margin-bottom: 10px;
+}
+
+.tracks-list {
+    margin-top: 10px;
+    flex: 1; /* Permet à la liste de prendre l'espace restant */
+    overflow-y: visible; /* Permet le scroll dans le parent */
+    min-height: 0; /* Permet au flex item de devenir plus petit que son contenu */
+}
+
+.track {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 5px;
+    padding: 8px;
+    border-left: 4px solid var(--border-color); /* Barre colorée par défaut */
+}
+
+/* Couleurs distinctes pour chaque piste */
+.track.track-color-0 { border-left-color: #FF6B6B; } /* Rouge */
+.track.track-color-1 { border-left-color: #4ECDC4; } /* Turquoise */
+.track.track-color-2 { border-left-color: #45B7D1; } /* Bleu */
+.track.track-color-3 { border-left-color: #96CEB4; } /* Vert */
+.track.track-color-4 { border-left-color: #FFEAA7; } /* Jaune */
+.track.track-color-5 { border-left-color: #DDA0DD; } /* Violet */
+.track.track-color-6 { border-left-color: #98D8C8; } /* Vert menthe */
+.track.track-color-7 { border-left-color: #F7DC6F; } /* Jaune doré */
+.track.track-color-8 { border-left-color: #BB8FCE; } /* Lavande */
+.track.track-color-9 { border-left-color: #85C1E9; } /* Bleu clair */
+
+.track-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.track-volume {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 80px;
+}
+
+.track-volume-slider {
+    width: 60px;
+    height: 4px;
+}
+
+.track-volume-display {
+    font-size: 10px;
+    color: var(--secondary-text);
+    min-width: 30px;
+}
+
+.track-name {
+    flex: 1;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.track-mute,
+.track-solo,
+.track-delete {
+    background-color: var(--accent-bg);
+    border: none;
+    color: var(--secondary-text);
+    padding: 2px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.track-mute:hover,
+.track-solo:hover {
+    background-color: var(--warning-color);
+}
+
+.track-delete:hover {
+    background-color: var(--danger-color);
+}
+
+/* Sélecteur de batterie et contrôles de piste améliorés */
+.track-drum-selector {
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    min-width: 120px;
+    margin: 0 5px;
+}
+
+.track-controls {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.track-btn {
+    background-color: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    color: var(--secondary-text);
+    padding: 4px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    min-width: 28px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.track-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    transform: scale(1.1);
+}
+
+.track-btn.track-mute.active,
+.track-btn.track-solo.active {
+    background-color: var(--warning-color);
+    color: var(--primary-text);
+}
+
+.track-btn.track-clone:hover {
+    background-color: var(--success-color);
+}
+
+.track-btn.track-edit:hover {
+    background-color: var(--accent-color);
+}
+
+.track-btn.track-delete:hover {
+    background-color: var(--danger-color);
+}
+
+.grid-container {
+    background-color: var(--accent-bg);
+    border-radius: 3px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    overflow: auto;
+}
+
+.grid-header {
+    margin-bottom: 10px;
+}
+
+.grid-measure-numbers {
+    display: grid;
+    gap: 2px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--secondary-text);
+    /* grid-template-columns sera défini dynamiquement par JavaScript */
+}
+
+.measure-number {
+    font-weight: bold;
+    color: var(--primary-text);
+}
+
+.pattern-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background-color: var(--grid-line-color);
+    padding: 2px;
+    border-radius: 3px;
+    position: relative; /* Pour le positionnement absolu du rectangle de sélection */
+}
+
+.grid-row {
+    display: grid;
+    gap: 1px;
+    /* grid-template-columns sera défini dynamiquement par JavaScript */
+}
+
+.grid-cell {
+    background-color: var(--secondary-bg);
+    aspect-ratio: 1;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+/* Tailles adaptées pour les différentes subdivisions */
+[data-note-value="whole"] .grid-cell {
+    width: 80px; /* Largeur fixe pour éviter les espaces vides */
+    height: 35px;
+    aspect-ratio: unset;
+}
+
+[data-note-value="half"] .grid-cell {
+    width: 60px; /* Largeur fixe pour éviter les espaces vides */
+    height: 35px;
+    aspect-ratio: unset;
+}
+
+[data-note-value="quarter"] .grid-cell {
+    width: 45px; /* Largeur fixe pour éviter les espaces vides */
+    height: 35px;
+    aspect-ratio: unset;
+}
+
+/* Amélioration pour les subdivisions très fines */
+[data-note-value="thirtysecond"] .grid-cell,
+[data-note-value="sixtyfourth"] .grid-cell {
+    min-width: 8px; /* Taille minimale plus grande */
+    min-height: 35px; /* Hauteur standard maintenue */
+    border: 1px solid var(--border-color); /* Bordures pour mieux distinguer */
+}
+
+/* Ajustement des grilles pour les notes longues */
+[data-note-value="whole"] .grid-row {
+    grid-template-columns: repeat(auto-fit, 80px) !important;
+    justify-content: start;
+}
+
+[data-note-value="half"] .grid-row {
+    grid-template-columns: repeat(auto-fit, 60px) !important;
+    justify-content: start;
+}
+
+[data-note-value="quarter"] .grid-row {
+    grid-template-columns: repeat(auto-fit, 45px) !important;
+    justify-content: start;
+}
+
+.grid-cell:hover {
+    background-color: var(--accent-color);
+    opacity: 0.7;
+}
+
+.grid-cell.active {
+    background-color: var(--success-color);
+}
+
+/* Style pour les cellules sélectionnées */
+.grid-cell.selected {
+    border: 2px solid #FFD700 !important;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6) !important;
+}
+
+.grid-cell.selected::before {
+    content: "✓";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #FFD700;
+    color: #000;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* Rectangle de sélection */
+.selection-rectangle {
+    position: absolute;
+    border: 2px dashed #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+    pointer-events: none;
+    z-index: 1000;
+    border-radius: 2px;
+}
+
+/* Classes de couleur pour les éléments de batterie */
+.grid-cell.active.kick { background-color: var(--kick-color) !important; }
+.grid-cell.active.snare { background-color: var(--snare-color) !important; }
+.grid-cell.active.hihat-closed { background-color: var(--hihat-closed-color) !important; }
+.grid-cell.active.hihat-open { background-color: var(--hihat-open-color) !important; }
+.grid-cell.active.crash { background-color: var(--crash-color) !important; }
+.grid-cell.active.ride { background-color: var(--ride-color) !important; }
+.grid-cell.active.splash { background-color: var(--splash-color) !important; }
+.grid-cell.active.tom-high { background-color: var(--tom-high-color) !important; }
+.grid-cell.active.tom-mid { background-color: var(--tom-mid-color) !important; }
+.grid-cell.active.tom-low { background-color: var(--tom-low-color) !important; }
+.grid-cell.active.tom-floor { background-color: var(--tom-floor-color) !important; }
+
+.grid-cell.drop-target {
+    background-color: var(--accent-color);
+    opacity: 0.5;
+}
+
+.grid-cell.current {
+    border: 3px solid #00ff00;
+    background-color: rgba(0, 255, 0, 0.2) !important;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+    animation: playback-cursor 0.5s ease-in-out infinite alternate;
+    z-index: 10;
+    position: relative;
+}
+
+@keyframes playback-cursor {
+    0% { 
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+        border-color: #00ff00;
+    }
+    100% { 
+        box-shadow: 0 0 25px rgba(0, 255, 0, 1);
+        border-color: #44ff44;
+    }
+}
+
+.grid-cell.current-time {
+    background-color: rgba(0, 123, 255, 0.3);
+    border: 2px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+}
+
+.grid-cell.selected {
+    background-color: rgba(255, 215, 0, 0.4) !important;
+    border: 2px solid #FFD700 !important;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    animation: pulse-selection 0.5s ease-in-out;
+}
+
+@keyframes pulse-selection {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Animations de feedback visuel */
+.drum-pad.hover-preview {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+    transition: all 0.1s ease;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.drum-pad.playing {
+    background-color: rgba(255, 215, 0, 0.6);
+    transform: scale(0.95);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    animation: drum-hit 0.2s ease-out;
+}
+
+@keyframes drum-hit {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+.grid-cell.note-playing {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    animation: note-pulse 0.3s ease-out;
+}
+
+@keyframes note-pulse {
+    0% { 
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+    50% { 
+        transform: scale(1.15);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    }
+    100% { 
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Modificateurs de notes */
+.grid-cell.accent::after {
+    content: "💪";
+    position: absolute;
+    top: -3px;
+    right: -1px;
+    font-size: 12px;
+    background: rgba(255, 215, 0, 0.9);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.grid-cell.ghost {
+    opacity: 0.4;
+    background-color: rgba(128, 128, 128, 0.3) !important;
+}
+
+.grid-cell.ghost::after {
+    content: "👻";
+    position: absolute;
+    top: -3px;
+    right: -1px;
+    font-size: 12px;
+    background: rgba(200, 200, 200, 0.9);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #C8C8C8;
+}
+
+.grid-cell.flam::before {
+    content: "🎭";
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    font-size: 12px;
+    background: rgba(255, 107, 107, 0.9);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FF6B6B;
+}
+
+.grid-cell.swing::after {
+    content: "🎊";
+    position: absolute;
+    top: 50%;
+    right: -1px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    background: rgba(138, 43, 226, 0.9);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #8A2BE2;
+}
+
+.grid-cell.triplet::before {
+    content: "₃";
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    font-size: 14px;
+    color: #FF6B6B;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.7);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-cell.tied {
+    border-bottom: 3px solid #4ECDC4;
+    box-shadow: inset 0 -3px 6px rgba(78, 205, 196, 0.3);
+}
+
+/* Combinaisons de modificateurs */
+.grid-cell.triplet.accent::after {
+    content: "💪";
+    right: -1px;
+    top: 12px; /* Décale vers le bas pour éviter le conflit avec le triolet */
+}
+
+.grid-cell.triplet.swing::after {
+    right: -1px;
+    top: 12px; /* Décale vers le bas */
+}
+
+.grid-cell.flam.accent::after {
+    right: -1px;
+    top: 12px; /* Décale vers le bas pour éviter le conflit avec le flam */
+}
+
+.grid-cell.flam.swing::after {
+    right: -1px;
+    top: 12px; /* Décale vers le bas */
+}
+
+/* Style pour le sélecteur quand des modificateurs sont actifs */
+.note-selector.has-modifiers {
+    border-left: 3px solid #FFD700;
+    padding-left: 8px;
+}
+
+/* Groove Templates */
+.pattern-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pattern-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.history-btn {
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.history-btn:hover:not(:disabled) {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.history-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.groove-templates {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background-color: var(--accent-bg);
+    border-radius: 5px;
+    border-left: 3px solid var(--accent-color);
+}
+
+.groove-templates label {
+    font-weight: bold;
+    color: var(--primary-text);
+    min-width: fit-content;
+}
+
+#groove-template {
+    flex: 1;
+    padding: 5px 10px;
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.apply-template-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.apply-template-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.grid-cell.beat {
+    border-left: 2px solid var(--accent-color);
+}
+
+.grid-cell.measure-start {
+    border-left: 3px solid var(--primary-text);
+}
+
+/* Styles adaptatifs pour les différentes subdivisions */
+.grid-cell {
+    min-width: 8px;
+    min-height: 20px;
+}
+
+/* Pour les subdivisions très fines, réduire la taille minimale */
+.grid-row[style*="repeat(128"] .grid-cell,
+.grid-row[style*="repeat(256"] .grid-cell {
+    min-width: 4px;
+    min-height: 16px;
+}
+
+/* Composition blocks */
+.composition-block {
+    background-color: var(--accent-color);
+    padding: 10px 15px;
+    border-radius: 3px;
+    margin: 2px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s;
+}
+
+.composition-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Fenêtre Batterie Virtuelle */
+.drum-kit-window {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary-bg);
+    border-top: 2px solid var(--border-color);
+    border-radius: 10px 10px 0 0;
+    z-index: 100;
+    transition: transform 0.3s ease-in-out;
+}
+
+.drum-kit-window.collapsed {
+    transform: translateY(calc(100% - 40px));
+}
+
+.drum-kit-header {
+    background-color: var(--accent-bg);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.drum-kit-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--primary-text);
+}
+
+.drum-kit-toggle {
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.drum-kit-window.collapsed .drum-kit-toggle {
+    transform: rotate(180deg);
+}
+
+.drum-kit-content {
+    display: flex;
+    padding: 15px;
+    gap: 20px;
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.drum-kit-main {
+    flex: 2;
+}
+
+.drum-kit-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    min-height: 280px;
+    justify-content: space-evenly;
+}
+
+/* Rangées de la batterie */
+.cymbal-row,
+.hihat-row,
+.toms-row,
+.snare-row,
+.kick-row {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.hihat-row {
+    gap: 10px;
+}
+
+.toms-row {
+    gap: 12px;
+}
+
+.snare-row {
+    gap: 20px;
+}
+
+.kick-row {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Pads de batterie */
+.drum-pad {
+    background-color: var(--accent-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.drum-pad:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
+}
+
+.drum-pad:active {
+    transform: scale(0.95);
+}
+
+.drum-pad.playing {
+    transform: scale(1.2) !important;
+    box-shadow: 0 0 20px currentColor !important;
+    animation: drumHit 0.3s ease-out;
+}
+
+@keyframes drumHit {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Types de pads avec couleurs personnalisées */
+.drum-pad.kick {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, var(--kick-color), #aa2222);
+    border-color: var(--kick-color);
+    box-shadow: inset 0 0 10px rgba(255, 68, 68, 0.3);
+}
+
+.drum-pad.snare {
+    background: radial-gradient(circle, var(--snare-color), #22aa22);
+    border-color: var(--snare-color);
+    box-shadow: inset 0 0 10px rgba(68, 255, 68, 0.3);
+}
+
+.drum-pad.tom {
+    background: radial-gradient(circle, var(--tom-mid-color), #cc3322);
+    border-color: var(--tom-mid-color);
+    box-shadow: inset 0 0 10px rgba(255, 102, 68, 0.3);
+}
+
+.drum-pad.cymbal {
+    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+    box-shadow: inset 0 0 10px rgba(255, 170, 0, 0.3);
+}
+
+.drum-pad.hihat {
+    width: 70px;
+    height: 70px;
+    box-shadow: inset 0 0 10px rgba(68, 68, 255, 0.3);
+}
+
+/* Couleurs spécifiques pour chaque pad */
+.drum-pad[data-drum="kick"] { 
+    background: radial-gradient(circle, var(--kick-color), #aa2222);
+    border-color: var(--kick-color);
+}
+.drum-pad[data-drum="snare"] { 
+    background: radial-gradient(circle, var(--snare-color), #22aa22);
+    border-color: var(--snare-color);
+}
+.drum-pad[data-drum="hihat-closed"] { 
+    background: radial-gradient(circle, var(--hihat-closed-color), #2222aa);
+    border-color: var(--hihat-closed-color);
+}
+.drum-pad[data-drum="hihat-open"] { 
+    background: radial-gradient(circle, var(--hihat-open-color), #22aaaa);
+    border-color: var(--hihat-open-color);
+}
+.drum-pad[data-drum="crash"] { 
+    background: radial-gradient(circle, var(--crash-color), #cc7700);
+    border-color: var(--crash-color);
+}
+.drum-pad[data-drum="ride"] { 
+    background: radial-gradient(circle, var(--ride-color), #aa22aa);
+    border-color: var(--ride-color);
+}
+.drum-pad[data-drum="splash"] { 
+    background: radial-gradient(circle, var(--splash-color), #aaaa22);
+    border-color: var(--splash-color);
+}
+.drum-pad[data-drum="tom-high"] { 
+    background: radial-gradient(circle, var(--tom-high-color), #cc5522);
+    border-color: var(--tom-high-color);
+}
+.drum-pad[data-drum="tom-mid"] { 
+    background: radial-gradient(circle, var(--tom-mid-color), #cc3322);
+    border-color: var(--tom-mid-color);
+}
+.drum-pad[data-drum="tom-low"] { 
+    background: radial-gradient(circle, var(--tom-low-color), #cc2255);
+    border-color: var(--tom-low-color);
+}
+.drum-pad[data-drum="tom-floor"] { 
+    background: radial-gradient(circle, var(--tom-floor-color), #5522cc);
+    border-color: var(--tom-floor-color);
+}
+
+.drum-icon {
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+.drum-pad span {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1;
+}
+
+.drum-pad.cymbal span,
+.drum-pad.hihat span {
+    color: #333;
+}
+
+/* Panneau de réglages */
+.drum-settings-panel {
+    flex: 1;
+    background-color: var(--accent-bg);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    overflow-y: auto;
+    max-height: 320px;
+}
+
+.drum-settings-panel h4 {
+    margin-bottom: 20px;
+    color: var(--primary-text);
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.drum-settings-panel h5 {
+    margin: 15px 0 10px 0;
+    color: var(--secondary-text);
+    font-size: 14px;
+}
+
+.sound-selection,
+.volume-control,
+.pan-control,
+.reverb-control {
+    margin-bottom: 20px;
+}
+
+.sound-selection label,
+.volume-control label,
+.pan-control label,
+.reverb-control label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--secondary-text);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.sound-selection select {
+    width: 100%;
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.sound-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.control-btn {
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: background-color 0.2s;
+}
+
+.control-btn:hover {
+    background-color: var(--accent-color);
+}
+
+.volume-control input[type="range"],
+.pan-control input[type="range"],
+.reverb-control input[type="range"] {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.volume-control span,
+.pan-control span,
+.reverb-control span {
+    font-size: 11px;
+    color: var(--secondary-text);
+    text-align: center;
+    display: block;
+}
+
+.global-controls {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Boutons d'ajout */
+.add-btn {
+    background-color: var(--success-color);
+    border: none;
+    color: var(--primary-text);
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+.save-block-btn {
+    background-color: var(--accent-color);
+    border: none;
+    color: var(--primary-text);
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.save-block-btn:hover {
+    background-color: var(--success-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(74, 158, 255, 0.3);
+}
+
+.save-block-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(74, 158, 255, 0.3);
+}
+
+.clear-pattern-btn {
+    background-color: var(--danger-color);
+    border: none;
+    color: var(--primary-text);
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.clear-pattern-btn:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+.clear-pattern-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+/* Modales */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: var(--primary-text);
+}
+
+.settings-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-section:last-of-type {
+    border-bottom: none;
+}
+
+.settings-section h4 {
+    margin-bottom: 10px;
+    color: var(--secondary-text);
+}
+
+.settings-section label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--secondary-text);
+}
+
+.settings-section select,
+.settings-section input {
+    width: 100%;
+    background-color: var(--accent-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.modal-close {
+    background-color: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    float: right;
+}
+
+.modal-close:hover {
+    background-color: var(--accent-color);
+}
+
+/* Styles pour le tutoriel */
+.tutorial-content {
+    max-width: 600px;
+    width: 95%;
+}
+
+.tutorial-header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.tutorial-progress {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background-color: var(--accent-bg);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+    width: 14.28%; /* 1/7 */
+}
+
+.tutorial-content-area {
+    min-height: 400px;
+    margin-bottom: 20px;
+}
+
+.tutorial-step {
+    animation: fadeIn 0.3s ease;
+}
+
+.tutorial-step.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tutorial-image {
+    font-size: 48px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.tutorial-features {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--accent-bg);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-color);
+}
+
+.feature-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.tutorial-steps-list {
+    margin: 20px 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: var(--accent-bg);
+    border-radius: 6px;
+}
+
+.step-number {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.tutorial-highlight {
+    background-color: rgba(74, 158, 255, 0.1);
+    border: 1px solid var(--accent-color);
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.drum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.drum-grid span {
+    background-color: var(--accent-bg);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.tutorial-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    gap: 10px;
+}
+
+.tutorial-btn {
+    background-color: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    min-width: 100px;
+}
+
+.tutorial-btn:hover:not(:disabled) {
+    background-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.tutorial-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tutorial-btn.secondary {
+    background-color: transparent;
+    border-color: var(--secondary-text);
+    color: var(--secondary-text);
+}
+
+.tutorial-btn.primary {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    font-weight: bold;
+}
+
+.tutorial-btn.hidden {
+    display: none;
+}
+
+/* États de glisser-déposer */
+.dragging {
+    opacity: 0.7;
+    transform: rotate(2deg);
+    z-index: 1000;
+}
+
+.drop-zone {
+    border: 2px dashed var(--accent-color);
+    background-color: rgba(74, 158, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .drum-kit-content {
+        flex-direction: column;
+        max-height: 450px;
+        padding: 10px;
+    }
+    
+    .drum-kit-layout {
+        margin-bottom: 15px;
+        gap: 8px;
+    }
+    
+    .music-interface {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto 1fr;
+        padding-bottom: 80px;
+    }
+    
+    .drum-kit-main {
+        max-height: 250px;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .control-bar {
+        flex-direction: column;
+        gap: 10px;
+        min-height: auto;
+        padding: 15px;
+    }
+    
+    .tracks-and-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+    
+    .pattern-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+    
+    .drum-kit-content {
+        max-height: 300px;
+        padding: 8px;
+    }
+    
+    .drum-kit-layout {
+        gap: 6px;
+        min-height: 200px;
+    }
+    
+    .cymbal-row,
+    .hihat-row,
+    .toms-row,
+    .snare-row {
+        gap: 8px;
+    }
+    
+    .drum-pad {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .drum-pad.kick {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.playing {
+    animation: pulse 0.2s ease-in-out;
+}
+
+/* Scrollbars personnalisées */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}

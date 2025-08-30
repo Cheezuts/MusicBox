@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicBox - Drum Pattern Creator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barre de contrôle principale -->
+        <header class="control-bar">
+            <div class="project-info">
+                <input type="text" id="project-name" value="Nouveau Projet" class="project-name-input">
+            </div>
+            
+            <div class="transport-controls">
+                <button id="play-btn" class="transport-btn">▶</button>
+                <button id="pause-btn" class="transport-btn">⏸</button>
+                <button id="stop-btn" class="transport-btn">⏹</button>
+                <button id="loop-btn" class="transport-btn loop-btn" title="Mode boucle">🔁</button>
+            </div>
+            
+            <div class="time-display">
+                <button class="time-nav" id="first-time" title="Aller au début">⏮</button>
+                <button class="time-nav" id="prev-time">◀</button>
+                <span class="time-indicator">1/16</span>
+                <button class="time-nav" id="next-time">▶</button>
+                <button class="time-nav" id="last-time" title="Aller à la fin">⏭</button>
+            </div>
+            
+            <div class="note-selector">
+                <select id="note-value">
+                    <option value="whole">𝅝 Ronde</option>
+                    <option value="half">𝅗𝅥 Blanche</option>
+                    <option value="quarter" selected>♩ Noire</option>
+                    <option value="eighth">♫ Croche</option>
+                    <option value="sixteenth">𝅘𝅥𝅯 Double-croche</option>
+                    <option value="thirtysecond">𝅘𝅥𝅰 Triple-croche</option>
+                    <option value="sixtyfourth">𝅘𝅥𝅱 Quadruple-croche</option>
+                </select>
+                <div class="note-modifiers">
+                    <label><input type="checkbox" id="accent"> 💪 Accent</label>
+                    <label><input type="checkbox" id="ghost"> 👻 Ghost</label>
+                    <label><input type="checkbox" id="flam"> 🎭 Flam</label>
+                    <label><input type="checkbox" id="swing"> 🎊 Swing</label>
+                    <label><input type="checkbox" id="triplet"> ₃ Triolet</label>
+                    <label><input type="checkbox" id="tied"> 𝄞 Lié</label>
+                </div>
+            </div>
+            
+            <div class="tempo-control">
+                <label for="tempo">BPM:</label>
+                <button id="tempo-down" class="tempo-btn">◀</button>
+                <input type="number" id="tempo" value="120" min="30" max="300">
+                <button id="tempo-up" class="tempo-btn">▶</button>
+            </div>
+            
+            <div class="master-volume">
+                <label for="volume">Volume:</label>
+                <input type="range" id="volume" min="0" max="100" value="80">
+                <span id="volume-display">80%</span>
+            </div>
+            
+            <div class="progress-section">
+                <label for="progress">Progression:</label>
+                <div class="progress-container">
+                    <input type="range" id="progress" min="0" max="100" value="0" step="0.1">
+                    <div class="progress-info">
+                        <span id="current-time">0:00</span>
+                        <span>/</span>
+                        <span id="total-time">0:00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn" id="new-project">Nouveau</button>
+                <button class="menu-btn" id="load-project">Charger</button>
+                <button class="menu-btn" id="save-project">Sauvegarder</button>
+                <button class="menu-btn" id="export-project">Exporter</button>
+                <button class="menu-btn" id="export-midi">Export MIDI</button>
+                <button class="menu-btn" id="settings">Paramètres</button>
+                <button class="menu-btn" id="tutorial">Tutoriel</button>
+            </div>
+        </header>
+
+        <!-- Interface musicale principale -->
+        <main class="music-interface">
+            <!-- Section des blocs -->
+            <section class="blocks-section">
+                <h3>Blocs</h3>
+                <div class="blocks-container" id="blocks-container">
+                    <!-- Les blocs seront ajoutés dynamiquement -->
+                </div>
+                <button id="add-block" class="add-btn">+ Ajouter Bloc</button>
+            </section>
+
+            <!-- Grille de composition -->
+            <section class="composition-grid">
+                <div class="composition-header">
+                    <h3>Composition</h3>
+                    <div class="composition-controls">
+                        <button id="play-composition-btn" class="composition-btn">▶️ Jouer Composition</button>
+                        <button id="pause-composition-btn" class="composition-btn">⏸️ Pause</button>
+                        <button id="stop-composition-btn" class="composition-btn">⏹️ Stop</button>
+                        <button id="loop-composition-btn" class="composition-btn loop-composition-btn" title="Boucle composition">🔁</button>
+                        <button id="clear-composition-btn" class="composition-btn danger">🗑️ Vider</button>
+                    </div>
+                </div>
+                <div class="composition-timeline" id="composition-timeline">
+                    <div class="timeline-drop-zone">
+                        Glissez les blocs ici pour composer votre morceau
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section des pistes et grille de pattern -->
+            <section class="pattern-section">
+                <div class="pattern-controls">
+                    <h3>Pattern Actuel</h3>
+                    <div class="pattern-actions">
+                        <button id="undo" class="history-btn" title="Annuler la dernière action" disabled>↶ Annuler</button>
+                        <button id="redo" class="history-btn" title="Refaire l'action annulée" disabled>↷ Refaire</button>
+                        <button id="clear-pattern" class="clear-pattern-btn" title="Vider toutes les notes du pattern">🗑️ Vider Pattern</button>
+                        <button id="save-as-block" class="save-block-btn" title="Sauvegarder ce pattern comme bloc">💾 Enregistrer Bloc</button>
+                    </div>
+                    <div class="groove-templates">
+                        <label>🎵 Templates:</label>
+                        <select id="groove-template">
+                            <option value="">-- Choisir un groove --</option>
+                            <option value="rock-basic">🤘 Rock Basic</option>
+                            <option value="rock-fill">🤘 Rock Fill</option>
+                            <option value="jazz-swing">🎷 Jazz Swing</option>
+                            <option value="jazz-latin">🎷 Jazz Latin</option>
+                            <option value="funk-classic">🕺 Funk Classic</option>
+                            <option value="funk-ghost">🕺 Funk Ghost</option>
+                            <option value="latin-samba">🌶️ Samba</option>
+                            <option value="latin-bossa">🌶️ Bossa Nova</option>
+                            <option value="electronic-basic">🎛️ Electronic Basic</option>
+                            <option value="electronic-breakbeat">🎛️ Breakbeat</option>
+                        </select>
+                        <button id="apply-template" class="apply-template-btn" title="Appliquer le template sélectionné">✨ Appliquer</button>
+                    </div>
+                </div>
+                
+                <div class="tracks-and-grid">
+                    <div class="tracks-panel">
+                        <div class="track-controls">
+                            <button id="add-track" class="add-btn">+ Piste</button>
+                        </div>
+                        <div class="tracks-list" id="tracks-list">
+                            <div class="track" data-track-id="track-1">
+                                <div class="track-header">
+                                    <div class="track-volume">
+                                        <input type="range" class="track-volume-slider" min="0" max="100" value="80">
+                                        <span class="track-volume-display">80%</span>
+                                    </div>
+                                    <span class="track-name">Grosse Caisse</span>
+                                    <select class="track-drum-selector">
+                                        <option value="kick" selected>🥁 Grosse Caisse</option>
+                                        <option value="snare">⚡ Caisse Claire</option>
+                                        <option value="hihat-closed">🔒 Hi-Hat Fermé</option>
+                                        <option value="hihat-open">🔓 Hi-Hat Ouvert</option>
+                                        <option value="crash">💥 Crash</option>
+                                        <option value="ride">🎯 Ride</option>
+                                        <option value="splash">✨ Splash</option>
+                                        <option value="tom-high">🥁 Tom Haut</option>
+                                        <option value="tom-mid">🪘 Tom Moyen</option>
+                                        <option value="tom-low">🛢️ Tom Bas</option>
+                                        <option value="tom-floor">🗂️ Tom de Sol</option>
+                                    </select>
+                                    <div class="track-controls">
+                                        <button class="track-btn track-mute" title="Mute">🔇</button>
+                                        <button class="track-btn track-solo" title="Solo">🎯</button>
+                                        <button class="track-btn track-clone" title="Cloner">⧉</button>
+                                        <button class="track-btn track-edit" title="Éditer">✎</button>
+                                        <button class="track-btn track-delete" title="Supprimer">🗑️</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="track" data-track-id="track-2">
+                                <div class="track-header">
+                                    <div class="track-volume">
+                                        <input type="range" class="track-volume-slider" min="0" max="100" value="80">
+                                        <span class="track-volume-display">80%</span>
+                                    </div>
+                                    <span class="track-name">Caisse Claire</span>
+                                    <select class="track-drum-selector">
+                                        <option value="kick">🥁 Grosse Caisse</option>
+                                        <option value="snare" selected>⚡ Caisse Claire</option>
+                                        <option value="hihat-closed">🔒 Hi-Hat Fermé</option>
+                                        <option value="hihat-open">🔓 Hi-Hat Ouvert</option>
+                                        <option value="crash">💥 Crash</option>
+                                        <option value="ride">🎯 Ride</option>
+                                        <option value="splash">✨ Splash</option>
+                                        <option value="tom-high">🥁 Tom Haut</option>
+                                        <option value="tom-mid">🪘 Tom Moyen</option>
+                                        <option value="tom-low">🛢️ Tom Bas</option>
+                                        <option value="tom-floor">🗂️ Tom de Sol</option>
+                                    </select>
+                                    <div class="track-controls">
+                                        <button class="track-btn track-mute" title="Mute">🔇</button>
+                                        <button class="track-btn track-solo" title="Solo">🎯</button>
+                                        <button class="track-btn track-clone" title="Cloner">⧉</button>
+                                        <button class="track-btn track-edit" title="Éditer">✎</button>
+                                        <button class="track-btn track-delete" title="Supprimer">🗑️</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="track" data-track-id="track-3">
+                                <div class="track-header">
+                                    <div class="track-volume">
+                                        <input type="range" class="track-volume-slider" min="0" max="100" value="80">
+                                        <span class="track-volume-display">80%</span>
+                                    </div>
+                                    <span class="track-name">Charleston</span>
+                                    <select class="track-drum-selector">
+                                        <option value="kick">🥁 Grosse Caisse</option>
+                                        <option value="snare">⚡ Caisse Claire</option>
+                                        <option value="hihat-closed" selected>🔒 Hi-Hat Fermé</option>
+                                        <option value="hihat-open">🔓 Hi-Hat Ouvert</option>
+                                        <option value="crash">💥 Crash</option>
+                                        <option value="ride">🎯 Ride</option>
+                                        <option value="splash">✨ Splash</option>
+                                        <option value="tom-high">🥁 Tom Haut</option>
+                                        <option value="tom-mid">🪘 Tom Moyen</option>
+                                        <option value="tom-low">🛢️ Tom Bas</option>
+                                        <option value="tom-floor">🗂️ Tom de Sol</option>
+                                    </select>
+                                    <div class="track-controls">
+                                        <button class="track-btn track-mute" title="Mute">🔇</button>
+                                        <button class="track-btn track-solo" title="Solo">🎯</button>
+                                        <button class="track-btn track-clone" title="Cloner">⧉</button>
+                                        <button class="track-btn track-edit" title="Éditer">✎</button>
+                                        <button class="track-btn track-delete" title="Supprimer">🗑️</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-container">
+                        <div class="grid-header">
+                            <div class="grid-measure-numbers">
+                                <span>1</span><span>2</span><span>3</span><span>4</span>
+                            </div>
+                        </div>
+                        <div class="pattern-grid" id="pattern-grid">
+                            <!-- La grille sera générée dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Fenêtre Batterie Virtuelle -->
+        <div class="drum-kit-window" id="drum-kit-window">
+            <div class="drum-kit-header" id="drum-kit-header">
+                <span class="drum-kit-title">🥁 Batterie Virtuelle</span>
+                <button class="drum-kit-toggle" id="drum-kit-toggle">▲</button>
+            </div>
+            
+            <div class="drum-kit-content" id="drum-kit-content">
+                <div class="drum-kit-main">
+                    <!-- Disposition réaliste de la batterie -->
+                    <div class="drum-kit-layout">
+                        <!-- Ligne du haut : Cymbales -->
+                        <div class="cymbal-row">
+                            <div class="drum-pad cymbal" data-drum="crash" draggable="true">
+                                <div class="drum-icon">💥</div>
+                                <span>Crash</span>
+                            </div>
+                            <div class="drum-pad cymbal" data-drum="splash" draggable="true">
+                                <div class="drum-icon">✨</div>
+                                <span>Splash</span>
+                            </div>
+                            <div class="drum-pad cymbal" data-drum="ride" draggable="true">
+                                <div class="drum-icon">🎯</div>
+                                <span>Ride</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ligne du milieu : Hi-Hats -->
+                        <div class="hihat-row">
+                            <div class="drum-pad hihat" data-drum="hihat-closed" draggable="true">
+                                <div class="drum-icon">🔒</div>
+                                <span>HH Closed</span>
+                            </div>
+                            <div class="drum-pad hihat" data-drum="hihat-open" draggable="true">
+                                <div class="drum-icon">🔓</div>
+                                <span>HH Open</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ligne des toms : Tous les toms côte à côte -->
+                        <div class="toms-row">
+                            <div class="drum-pad tom" data-drum="tom-high" draggable="true">
+                                <div class="drum-icon">🥁</div>
+                                <span>Tom H</span>
+                            </div>
+                            <div class="drum-pad tom" data-drum="tom-mid" draggable="true">
+                                <div class="drum-icon">🪘</div>
+                                <span>Tom M</span>
+                            </div>
+                            <div class="drum-pad tom" data-drum="tom-low" draggable="true">
+                                <div class="drum-icon">🛢️</div>
+                                <span>Tom L</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ligne du bas : Caisse claire et Tom Floor -->
+                        <div class="snare-row">
+                            <div class="drum-pad snare" data-drum="snare" draggable="true">
+                                <div class="drum-icon">⚡</div>
+                                <span>Snare</span>
+                            </div>
+                            <div class="drum-pad tom" data-drum="tom-floor" draggable="true">
+                                <div class="drum-icon">🗂️</div>
+                                <span>Tom F</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ligne du bas : Grosse caisse -->
+                        <div class="kick-row">
+                            <div class="drum-pad kick" data-drum="kick" draggable="true">
+                                <div class="drum-icon">💣</div>
+                                <span>Kick</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Panneau de réglages à droite -->
+                <div class="drum-settings-panel">
+                    <h4>Paramètres Sons</h4>
+                    
+                    <div class="kit-selection">
+                        <label for="drum-kit-preset">Kit de Batterie:</label>
+                        <select id="drum-kit-preset">
+                            <option value="default">🥁 Standard</option>
+                            <option value="rock">🤘 Rock</option>
+                            <option value="metal">⚡ Metal</option>
+                            <option value="jazz">🎷 Jazz</option>
+                            <option value="electronic">🎛️ Electronic</option>
+                        </select>
+                        <button id="preview-kit" class="control-btn">🎵 Écouter Kit</button>
+                    </div>
+                    
+                    <div class="sound-selection">
+                        <label for="selected-drum">Élément sélectionné:</label>
+                        <select id="selected-drum">
+                            <option value="kick">Grosse Caisse</option>
+                            <option value="snare">Caisse Claire</option>
+                            <option value="hihat-closed">Hi-Hat Fermé</option>
+                            <option value="hihat-open">Hi-Hat Ouvert</option>
+                            <option value="crash">Crash</option>
+                            <option value="ride">Ride</option>
+                            <option value="splash">Splash</option>
+                            <option value="tom-high">Tom Haut</option>
+                            <option value="tom-mid">Tom Moyen</option>
+                            <option value="tom-low">Tom Bas</option>
+                            <option value="tom-floor">Tom de Sol</option>
+                        </select>
+                    </div>
+                    
+                    <div class="sound-controls">
+                        <button id="change-sound" class="control-btn">📁 Changer Son</button>
+                        <button id="reset-sound" class="control-btn">🔄 Reset</button>
+                    </div>
+                    
+                    <div class="volume-control">
+                        <label for="drum-element-volume">Volume:</label>
+                        <input type="range" id="drum-element-volume" min="0" max="100" value="80">
+                        <span id="drum-volume-display">80%</span>
+                    </div>
+                    
+                    <div class="pan-control">
+                        <label for="drum-pan">Panoramique:</label>
+                        <input type="range" id="drum-pan" min="-100" max="100" value="0">
+                        <span id="drum-pan-display">Centre</span>
+                    </div>
+                    
+                    <div class="reverb-control">
+                        <label for="drum-reverb">Reverb:</label>
+                        <input type="range" id="drum-reverb" min="0" max="100" value="20">
+                        <span id="drum-reverb-display">20%</span>
+                    </div>
+                    
+                    <div class="global-controls">
+                        <h5>Contrôles Globaux</h5>
+                        <button id="mute-all-drums" class="control-btn">🔇 Mute All</button>
+                        <button id="solo-selected" class="control-btn">🎯 Solo</button>
+                        <button id="test-all-drums" class="control-btn">🎵 Test All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Paramètres</h3>
+            <div class="settings-section">
+                <h4>Interface</h4>
+                <label>Thème de couleur:</label>
+                <select id="color-theme">
+                    <option value="dark">Sombre</option>
+                    <option value="light">Clair</option>
+                </select>
+            </div>
+            <div class="settings-section">
+                <h4>Audio</h4>
+                <label>Importation VST:</label>
+                <input type="file" id="vst-import" accept=".vst,.vst3">
+            </div>
+            <button class="modal-close">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Modal Tutoriel -->
+    <div id="tutorial-modal" class="modal hidden">
+        <div class="modal-content tutorial-content">
+            <div class="tutorial-header">
+                <h3>🎵 Tutoriel MusicBox</h3>
+                <div class="tutorial-progress">
+                    <span id="tutorial-step-indicator">Étape 1 / 7</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="tutorial-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-content-area">
+                <div class="tutorial-step" id="tutorial-step-1">
+                    <h4>🎼 Bienvenue dans MusicBox !</h4>
+                    <p>MusicBox est un séquenceur de batterie qui vous permet de créer des patterns rythmiques comme dans Guitar Pro.</p>
+                    <div class="tutorial-image">🥁</div>
+                    <p><strong>Ce que vous allez apprendre :</strong></p>
+                    <ul>
+                        <li>Navigation dans l'interface</li>
+                        <li>Création de patterns de batterie</li>
+                        <li>Utilisation de la batterie virtuelle</li>
+                        <li>Organisation en blocs et composition</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-step hidden" id="tutorial-step-2">
+                    <h4>🎛️ Interface Principale</h4>
+                    <p>L'interface se compose de plusieurs zones principales :</p>
+                    <div class="tutorial-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">📊</span>
+                            <div>
+                                <strong>Barre de contrôle :</strong> Transport (play/pause/stop), tempo, volume
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎯</span>
+                            <div>
+                                <strong>Section patterns :</strong> Grille pour placer vos notes de batterie
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🥁</span>
+                            <div>
+                                <strong>Batterie virtuelle :</strong> 11 éléments de batterie (en bas)
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🧱</span>
+                            <div>
+                                <strong>Blocs :</strong> Organisation de vos patterns en séquences
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tutorial-step hidden" id="tutorial-step-3">
+                    <h4>🥁 Batterie Virtuelle</h4>
+                    <p>Cliquez sur l'en-tête <strong>"🥁 Batterie Virtuelle"</strong> en bas pour l'ouvrir.</p>
+                    <div class="tutorial-highlight">
+                        <p>👆 <strong>Essayez maintenant :</strong> Cliquez sur l'en-tête de la batterie virtuelle pour l'ouvrir</p>
+                    </div>
+                    <p>La batterie contient 11 éléments :</p>
+                    <div class="drum-grid">
+                        <span>💥 Crash</span> <span>✨ Splash</span> <span>🎯 Ride</span>
+                        <span>🔒 HH Fermé</span> <span>🔓 HH Ouvert</span>
+                        <span>🥁 Tom H</span> <span>🪘 Tom M</span> <span>🛢️ Tom L</span>
+                        <span>⚡ Snare</span> <span>🗂️ Tom F</span>
+                        <span>💣 Kick</span>
+                    </div>
+                    <p><strong>Testez les sons :</strong> Cliquez sur chaque pad pour entendre le son !</p>
+                </div>
+
+                <div class="tutorial-step hidden" id="tutorial-step-4">
+                    <h4>🎯 Création de Patterns</h4>
+                    <p>Un pattern est une séquence rythmique. Voici comment créer votre premier pattern :</p>
+                    <div class="tutorial-steps-list">
+                        <div class="step-item">
+                            <span class="step-number">1</span>
+                            <div>
+                                <strong>Cliquez sur la grille :</strong> Chaque case représente un pas de temps
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-number">2</span>
+                            <div>
+                                <strong>Placez des notes :</strong> Cliquez pour ajouter, re-cliquez pour supprimer
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-number">3</span>
+                            <div>
+                                <strong>Drag & Drop :</strong> Glissez un pad de batterie sur la grille
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-highlight">
+                        <p>🎵 <strong>Astuce :</strong> Commencez par placer la grosse caisse sur les temps 1 et 3, puis la caisse claire sur les temps 2 et 4 !</p>
+                    </div>
+                </div>
+
+                <div class="tutorial-step hidden" id="tutorial-step-5">
+                    <h4>🎚️ Gestion des Pistes</h4>
+                    <p>Chaque ligne est une piste correspondant à un élément de batterie :</p>
+                    <div class="tutorial-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🔊</span>
+                            <div>
+                                <strong>Volume :</strong> Ajustez le volume de chaque piste
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🥁</span>
+                            <div>
+                                <strong>Sélecteur :</strong> Changez l'élément de batterie assigné à la piste
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🔇</span>
+                            <div>
+                                <strong>Mute/Solo :</strong> Coupez ou isolez des pistes
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⧉</span>
+                            <div>
+                                <strong>Cloner/Éditer :</strong> Dupliquez ou modifiez vos pistes
+                            </div>
+                        </div>
+                    </div>
+                    <p><strong>Essayez :</strong> Cliquez sur "+ Piste" pour ajouter une nouvelle piste !</p>
+                </div>
+
+                <div class="tutorial-step hidden" id="tutorial-step-6">
+                    <h4>🏗️ Blocs et Composition</h4>
+                    <p>Organisez vos patterns en blocs pour créer des morceaux complets :</p>
+                    <div class="tutorial-steps-list">
+                        <div class="step-item">
+                            <span class="step-number">1</span>
+                            <div>
+                                <strong>Créer un bloc :</strong> Cliquez sur "+ Ajouter Bloc"
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-number">2</span>
+                            <div>
+                                <strong>Glisser-déposer :</strong> Faites glisser le bloc vers la timeline
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-number">3</span>
+                            <div>
+                                <strong>Organiser :</strong> Créez la structure de votre morceau
+                            </div>
+                        </div>
+                    </div>
+                    <p><strong>Structure typique :</strong> Intro → Couplet → Refrain → Couplet → Refrain → Solo → Outro</p>
+                </div>
+
+                <div class="tutorial-step hidden" id="tutorial-step-7">
+                    <h4>💾 Sauvegarde et Lecture</h4>
+                    <p>Votre travail est automatiquement sauvegardé, mais vous pouvez aussi :</p>
+                    <div class="tutorial-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">▶️</span>
+                            <div>
+                                <strong>Jouer :</strong> Utilisez les contrôles play/pause/stop
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">💾</span>
+                            <div>
+                                <strong>Sauvegarder :</strong> Exportez vos projets (.musicbox)
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📁</span>
+                            <div>
+                                <strong>Charger :</strong> Importez vos projets sauvegardés
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎛️</span>
+                            <div>
+                                <strong>Tempo :</strong> Ajustez le BPM en temps réel
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-highlight">
+                        <p>🎉 <strong>Félicitations !</strong> Vous êtes maintenant prêt à créer vos premiers patterns de batterie !</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-controls">
+                <button id="tutorial-prev" class="tutorial-btn" disabled>← Précédent</button>
+                <button id="tutorial-skip" class="tutorial-btn secondary">Passer</button>
+                <button id="tutorial-next" class="tutorial-btn">Suivant →</button>
+                <button id="tutorial-finish" class="tutorial-btn primary hidden">🎵 Commencer !</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
